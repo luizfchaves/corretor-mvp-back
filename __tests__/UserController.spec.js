@@ -84,6 +84,7 @@ describe('User router', ()=>{
 
       expect(status).toBe(200);
       expect(JSON.parse(text).id).toBeDefined();
+      expect(1).toBe(2);
     });
   });
 });

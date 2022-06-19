@@ -6,7 +6,7 @@ const mongod = new MongoMemoryServer();
 /**
  * database in memory for tests
  */
-class testDatabase {
+class FakeDatabase {
   /**
    * Connects to database server
    */
@@ -36,7 +36,7 @@ class testDatabase {
     const collections = mongoose.connection.collections;
 
     for (const key in collections) {
-      if (Object.prototype.hasOwnProperty.call(foo, key)) {
+      if (Object.prototype.hasOwnProperty.call(()=>{}, key)) {
         const collection = collections[key];
         await collection.deleteMany({});
       }
@@ -44,4 +44,4 @@ class testDatabase {
   }
 }
 
-module.exports = testDatabase;
+module.exports = FakeDatabase;

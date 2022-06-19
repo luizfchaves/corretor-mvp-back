@@ -4,8 +4,8 @@
     "checkJs": true,
     "outDir": "./dist", // vscode :)
     "types":["node"],
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
   },
-  "include":["./src/**/*.js"],
+  "include":["./src/**/*.js", "./__tests__/*.js", "node_modules/@types/jest", "__tests__/utils/db.js"],
   "exclude:":["node_modules","**/node_modules/*"],
 }

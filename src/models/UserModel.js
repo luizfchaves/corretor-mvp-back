@@ -12,7 +12,7 @@ const UserSchema = new Schema(
         type: String,
         required: true,
         unique: true,
-        validate: [isEmail, 'Invalid email'],
+        validate: [{validator: isEmail, msg: 'Invalid email', type: 'invalid'}],
       },
       password: {
         type: String,

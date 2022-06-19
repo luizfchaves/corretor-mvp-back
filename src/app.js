@@ -10,8 +10,8 @@ app.use(express.json());
 app.use(cors());
 
 
-const imageRouter = require('./src/routers/image');
-const userRouter = require('./src/routers/user');
+const imageRouter = require('./routers/image');
+const userRouter = require('./routers/user');
 app.use('/image', imageRouter);
 app.use('/user', userRouter);
 

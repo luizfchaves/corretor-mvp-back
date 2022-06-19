@@ -1,5 +1,5 @@
 require('dotenv').config();
-const app = require('./app');
+const app = require('./src/app');
 
 const Logger = require('./src/plugins/logger');
 global.Logger = Logger;

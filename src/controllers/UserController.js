@@ -1,4 +1,5 @@
 const bcryptjs = require('bcryptjs');
+const {default: mongoose} = require('mongoose');
 
 const UserModel = require('../models/UserModel');
 const Logger = require('../plugins/logger');
@@ -33,6 +34,12 @@ const UserController = {
       });
       return res.status(200).json({id: userPointer._id});
     } catch (err) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        if (err.errors.email.kind === 'invalid') {
+          Logger.debug('Email is invalid');
+          return res.status(400).json({error: 'Email is invalid'});
+        }
+      }
       Logger.error(`Error when creating user: ${err}` );
       return res.status(500).json({error: 'User save failed'});
     }
@@ -56,7 +63,7 @@ const UserController = {
       }
       if (!(await bcryptjs.compare(password, user.password))) {
         Logger.debug(`Wrong password trying to authenticate in user ${email}`);
-        return res.status(401).json({error: 'Email or password incorrect'});
+        return res.status(404).json({error: 'Email or password incorrect'});
       }
       // TO-DO: Generate token
       return res.status(200).json({id: user._id});

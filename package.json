@@ -8,7 +8,8 @@
     "start": "nodemon --legacy-watch index.js",
     "start:docker": "docker-compose up",
     "test": "jest",
-    "test:docker":"docker-compose -f docker-compose.test.yml up --build",
+    "test:watch": "jest --watch",
+    "test:docker": "docker-compose -f docker-compose.test.yml up --build",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix"
   },
@@ -27,14 +28,19 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.2.0",
+    "@types/jest": "^28.1.2",
     "eslint": "^8.18.0",
     "eslint-config-google": "^0.14.0",
     "jest": "^28.1.1",
     "mongodb-memory-server": "^8.6.1",
     "nodemon": "^2.0.16",
+    "pre-commit": "^1.2.2",
     "supertest": "^6.2.3"
   },
-  "jest":{
-    "testMatch": ["**.spec.js"]
+  "jest": {
+    "testMatch": [
+      "**.spec.js"
+    ]
   }
 }

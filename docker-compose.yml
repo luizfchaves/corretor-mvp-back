@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  db:
+    image: mongo:4.2
+    command: mongod --port 27018
+    ports:
+      - "27018:27018"
+
+  back:
+    build: .
+    command: npm start
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - "db"

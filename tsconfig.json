@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "outDir": "./dist", // vscode :)
+    "types":["node"],
+    "typeRoots": ["./node_modules/@types"]
+  },
+  "include":["./src/**/*.js"],
+  "exclude:":["node_modules","**/node_modules/*"],
+}

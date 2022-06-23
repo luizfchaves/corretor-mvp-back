@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prod": "node index.js",
-    "start": "nodemon --legacy-watch index.js",
+    "start": "node index.js",
+    "dev": "nodemon --legacy-watch index.js",
     "start:docker": "docker-compose up",
     "test": "jest",
     "test:watch": "jest --watch",

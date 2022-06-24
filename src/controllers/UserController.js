@@ -1,11 +1,10 @@
 const bcryptjs = require('bcryptjs');
-const {default: mongoose} = require('mongoose');
+const DatabaseClient = require('../plugins/database/client');
 
-const UserModel = require('../models/UserModel');
 const Logger = require('../plugins/logger');
 
-const UserController = {
-  create: async (req, res) => {
+class UserController {
+  static async create(req, res) {
     const {name, email, password} = req.body;
     if (!name) {
       Logger.debug('name is required');
@@ -20,21 +19,21 @@ const UserController = {
       return res.status(400).json({error: 'password is required'});
     }
 
-    const emailAlreadyExists = await UserModel.findOne({email});
+    const emailAlreadyExists = await new DatabaseClient('User').first({email});
     if (emailAlreadyExists) {
       Logger.debug('Email already exists');
       return res.status(400).json({error: 'Email already exists'});
     }
 
     try {
-      const userPointer = await UserModel.create({
+      const userPointer = await new DatabaseClient('User').create({
         name,
         email,
         password,
       });
       return res.status(200).json({id: userPointer._id});
     } catch (err) {
-      if (err instanceof mongoose.Error.ValidationError) {
+      if (err instanceof DatabaseClient.ValidationError) {
         if (err.errors.email.kind === 'invalid') {
           Logger.debug('Email is invalid');
           return res.status(400).json({error: 'Email is invalid'});
@@ -43,8 +42,8 @@ const UserController = {
       Logger.error(`Error when creating user: ${err}` );
       return res.status(500).json({error: 'User save failed'});
     }
-  },
-  authenticate: async (req, res) => {
+  }
+  static async authenticate(req, res) {
     const {email, password} = req.body;
     if (!email) {
       Logger.debug('email is required');
@@ -56,7 +55,7 @@ const UserController = {
     }
 
     try {
-      const user = await UserModel.findOne({email});
+      const user = await new DatabaseClient('User').first({email});
       if (!user) {
         Logger.debug(`User not found, searching: ${email}`);
         return res.status(404).json({error: 'Email or password incorrect'});
@@ -71,7 +70,7 @@ const UserController = {
       Logger.error(`Error when authenticating user: ${err}` );
       return res.status(500).json({error: 'User authentication failed'});
     }
-  },
+  }
 };
 
 module.exports = UserController;

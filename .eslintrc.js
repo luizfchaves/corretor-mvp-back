@@ -23,4 +23,12 @@ module.exports = {
       'capIsNewExceptions': ['Router'],
     }],
   },
+  'overrides': [
+    {
+      'files': ['src/controllers/*.js'],
+      'rules': {
+        'require-jsdoc': 'off',
+      },
+    },
+  ],
 };

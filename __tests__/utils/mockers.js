@@ -1,5 +1,5 @@
 const {faker} = require('@faker-js/faker');
-const userModel = require('../../src/models/UserModel');
+const DatabaseClient = require('../../src/plugins/database/client');
 
 const generateRandomUser = () => ({
   name: faker.name.findName(),
@@ -9,7 +9,7 @@ const generateRandomUser = () => ({
 
 const generateRandomUserAndSave = async () => {
   const user = generateRandomUser();
-  const userPointer = await userModel.create(user);
+  const userPointer = await new DatabaseClient('User').create(user);
   return {...user, id: userPointer._id};
 };
 

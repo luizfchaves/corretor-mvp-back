@@ -1,13 +1,13 @@
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
+const DatabaseClient = require('../plugins/database/client');
 
 dayjs.extend(utc);
 
-const ImageModel = require('../models/ImageModel');
 const Logger = require('../plugins/logger');
 
-const ImageController = {
-  upload: async function(req, res) {
+class ImageController {
+  static async upload(req, res) {
     const {name} = req.body;
     const file = req.files.file;
 
@@ -36,7 +36,7 @@ const ImageController = {
 
     try {
       // Depois eu coloco salvando na nuvem direito, agora não importa
-      const imagePointer = await ImageModel.create({
+      const imagePointer = await new DatabaseClient('Image').create({
         name: `${name}-${dayjs().utc().format()}`,
         img: {
           data: file.data,
@@ -48,9 +48,9 @@ const ImageController = {
       Logger.error('err: ', err);
       return res.status(500).send('File upload failed');
     }
-  },
+  }
 
-  get: async function(req, res) {
+  static async get(req, res) {
     const id = req.params.id;
     if (!id) {
       Logger.debug('No id provided');
@@ -59,7 +59,7 @@ const ImageController = {
 
     let image;
     try {
-      image = await ImageModel.findOne({_id: id});
+      image = await new DatabaseClient('Image').first({_id: id});
     } catch (e) {
       Logger.error('Error searching image: ', e);
       return res.status(404).json({error: 'No image found'});
@@ -73,7 +73,7 @@ const ImageController = {
     const blob = Buffer.from(image.img.data, 'base64');
     res.set('Content-Type', image.img.contentType);
     res.send(blob);
-  },
+  }
 };
 
 module.exports = ImageController;
